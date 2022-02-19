@@ -10,22 +10,30 @@ def main():
             width = int(input('Please enter a width between 3 and 50 for our grid\n'))
             if width > 2 and width < 51:
                 break
-
         while (True):
             height = int(input('Please enter a height between 3 and 50 for our grid\n'))
             if height > 2 and height < 51:
                 break
-
         array = [[0 for x in range(width)] for y in range(height)]
         build_array(array, width, height)
     elif len(sys.argv) == 2:
         array = list(csv.reader(open(sys.argv[1])))
         width = len(array[0])
         height = len(array)
+    elif len(sys.argv) == 3:
+        width = int(sys.argv[1])
+        height = int(sys.argv[2])
+        array = [[0 for x in range(width)] for y in range(height)]
+        build_array(array, width, height)
+    elif len(sys.argv) == 4:
+        width = int(sys.argv[1])
+        height = int(sys.argv[2])
+        array = [[0 for x in range(width)] for y in range(height)]
+        build_array(array, width, height, sys.argv[3])
     else:
-        print('Usage: python FILENAME.py (PRESET.csv)')
+        print('Usage: python FILENAME.py (PRESET.csv) OR (WIDTH HEIGHT r)')
 
-    print('Press or hold enter to advance generations, enter any value to quit\n')
+    proceed = input('Press or hold enter to advance generations, enter any value to quit\n')
     while (True):
         for k in range(height):
             print(*array[k])
@@ -40,9 +48,10 @@ def main():
     return
 
 
-def build_array(array, width, height):
+def build_array(array, width, height, random = ''):
 
-    random = input('Enter "r" for a random array, otherwise press enter to continue\n')
+    if random != 'r':
+        random = input('Enter "r" for a random array, otherwise press enter to continue\n')
     if random != 'r':
         for i in range(height):
             for j in range(width):
@@ -54,8 +63,6 @@ def build_array(array, width, height):
                     array[i][j] = '#'
                 else:
                     array[i][j] = value
-                for k in range(height):
-                    print(*array[k])
     else:
         for i in range(height):
             for j in range(width):
@@ -63,9 +70,6 @@ def build_array(array, width, height):
                     array[i][j] = '#'
                 else:
                     array[i][j] = ' '
-        for k in range(height):
-            print(*array[k])
-    print('\n')
     return
 
 def check_neighbors(array, i, j, width, height):
